@@ -17,6 +17,8 @@ source.set_radec((14,29,42.94),(-62,40,46.13)) # Proxima Cen
 # source.set_latlon((32,48,0),(79,0,0)) # Hanle
 source.set_latlon((-23,16,25.4856),(16,31,10.2432))  # HESS
 
+def stretch(f):
+    return np.sign(f) * np.abs(f)**(1/4)
 
 def run():
     F = 96
@@ -26,27 +28,34 @@ def run():
     
     sx,sy,x,y,Tmap,vari = teff(N,ds,lam)
     S = sbright(Tmap,lam,ds)
-    til = ('photons / (m^2 Hz sr)')
-    draw(sx,sy,S*vari/ds**2,8,'sky',cmap='magma',title=til)
-    pl.pause(2)
+    #pl.show()
     #f *= 1 * (1e9 * 300)**.5  # A = 1 m^2 and t_obs = 5 min
     f = correldens(S,lam)
     fv = correldens(S*vari,lam)
     f /= np.max(f)
     fv /= np.max(fv)
+    til = ('photons / (m^2 s Hz sr)')
+    draw(sx,sy,S*vari/ds**2,8,'sky',cmap='magma',title=til)
+    pl.savefig('tmp/src')
+    #pl.pause(2)
+    sig = stretch(f)
+    til = ('correlation^(1/4) at %i nm' % (1e9*lam+0.5))
+    draw(x,y,sig,16,'ground',fceil=np.max(abs(sig)),cmap='coolwarm',title=til)
+    pl.savefig('tmp/corr')
+    #pl.pause(2)
+    sig = stretch(fv-f)
+    til = ('(corr diff)^(1/4) at %i nm' % (1e9*lam+0.5))
     
     for fr in range(76):
         jd = 246e5 + (fr-7)/96
-        fc = np.max(np.abs(fv-f))
-        til = ('correlation difference at %i nm' % (1e9*lam+0.5))
-        draw(x,y,fv-f,32,'ground',fceil=fc,cmap='coolwarm',title=til)
+        draw(x,y,sig,16,'ground',fceil=np.max(abs(sig)),cmap='coolwarm',title=til)
         u,v,w = source.get_uvw(jd,dx,dy,0*dx)
         hx,hy,hz = source.get_xyz(jd,0,0,1)
         print('time %.3f altitude %.3f' % (jd-246e5,hz))
         if hz > 0:
             pl.plot(u,v,'+',color='white')
-        pl.pause(1)
-        #pl.savefig('tmp/cdens%i'%fr)
+        #pl.pause(1)
+        pl.savefig('tmp/cdiff%i'%fr)
         print(fr)
 
 x = []

@@ -9,7 +9,7 @@ def teff(N,ds,lam):
     ch = pl.imread('eklein.png')
     sx,sy,x,y = grids(ds,N,lam)
     Tmap = 0*sx
-    Tmap[N//2-100:N//2+100,N//2-100:N//2+100] = ch[:,:,0]
+    Tmap[N//2-100:N//2+100,N//2-100:N//2+100] = ch[::-1,:,0]
     T = Tmap.reshape(N*N)
     px = T > np.max(T)/10
     Ts = 0*T
