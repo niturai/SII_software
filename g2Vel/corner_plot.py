@@ -36,6 +36,6 @@ fig = corner.corner(postsamples, labels= pnames, truths=truth, plot_datapoints=F
 
 plt.gcf().set_size_inches(8, 8)
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.11)
-plt.savefig("fig/corner.png")
+plt.savefig("fig/corner1.png")
 plt.show()
 
