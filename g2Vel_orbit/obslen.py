@@ -17,13 +17,14 @@ lat = raddeg(-23,16,17)
 lon = raddeg(16,30,00)
 
 # wavelength of observation 
-lam = 6e-7
+lam = 443e-9                        # disk observation (continuous spectrum)
+lam1 = 465e-9                       # emission region observation (line spectrum)
 
 # resolution time
 delt = 5e-9
 
 # observation day
-day = 2460000                  # 24 feb 2023
+day = 2460000                    # 24 feb 2023
 
 # sqrt(channels x nights)
 chnl = 1
@@ -45,7 +46,7 @@ for i in range(0, Night, 1):
 jd = np.array(julday).flatten()     # total observation time according to Julian time
 
 # Telescope position (only corner one have been taken)
-comb = combinations([-60+60j, 60+60j, -60-60j, 60-60j],2)
+comb = combinations([0+0j, 120+0j, 0+120j, 120+120j],2)
 
 # Number of baselines for observations
 base = []
