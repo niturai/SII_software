@@ -22,7 +22,7 @@ R_b = 13.9236                      # Radius of disk
 D = 2.872e10                       # Distance from earth in light seconds
 
 # position of orbit in sky with time
-dAB = np.load("data_final/dAB.npy")
+dAB = np.load("data/dAB.npy")
 X = dAB[0,0]                  # X-position of orbit
 Y = dAB[1,0]                  # Y-position of orbit
 
@@ -225,20 +225,21 @@ def smdata(sigma,lam,lam1):
 sdata = smdata(sigma,lam,lam1)
 sdata1 = smdata(sigma1,lam1,lam1)
 
-# save the signal and observation time
-np.save("data_final/jd",jd)
-np.save("data_final/xt",xt)
-np.save("data_final/yt",yt)
-np.save("data_final/sig",smdata(0,lam,lam1))
-np.save("data_final/sig_noise",smdata(sigma,lam,lam1))
-np.save("data_final/sig1",smdata(0,lam1,lam1))
-np.save("data_final/sig_noise1",smdata(sigma,lam1,lam1))
-
 
 # total SNR value
 SNR = (1/sigma)*(np.sum(sdata)**2)**.5
 print("total signal to noise ratio =", SNR)
 
+
+if __name__ == "__main__":
+     # save the signal and observation time
+     np.save("data/jd",jd)
+     np.save("data/xt",xt)
+     np.save("data/yt",yt)
+     np.save("data/sig",smdata(0,lam,lam1))
+     np.save("data/sig_noise",smdata(sigma,lam,lam1))
+     np.save("data/sig1",smdata(0,lam1,lam1))
+     np.save("data/sig_noise1",smdata(sigma,lam1,lam1))
 
 # the prior transformation
 ini_x, ini_y = R_a, R_b
@@ -297,7 +298,7 @@ if __name__ == "__main__":
 
     # Save the sample data in form of pickle 
     dres = sampler.results
-    out = open('data_final/dres_wrl.pkl','wb')
+    out = open('data/dres_wrl.pkl','wb')
     pickle.dump(dres,out)
     out.close()
     pool.close()

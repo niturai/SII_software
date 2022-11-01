@@ -11,7 +11,7 @@ R_b = 13.9236                      # Radius of disk
 
 
 # position of orbit in sky with time
-dAB = np.load("data_final/dAB.npy")
+dAB = np.load("data/dAB.npy")
 X = dAB[0,0]                  # X-position of orbit
 Y = dAB[1,0]                  # Y-position of orbit
 
@@ -29,16 +29,16 @@ def emis(M1,M2):
 R1 = emis(9,28) - R_b                           # Radius of WR (disk + atmosphere)
 
 # parameters, which are estimated
-truth = [R_a, R_b, X, Y]
+truth = [R_a, R_b, R1, X, Y]
 print('parameters',truth)
 
 
 #number of parameter to estimate
-pnames = ('$R_a (ls) $', '$R_b (ls) $', 'X', 'Y')
+pnames = ('$R_a (ls) $', '$R_b (ls) $', 'R1', 'X', 'Y')
 ndim = len(pnames)
 
 # the interderometric data
-infile = open('data3/dres_wrl.pkl','rb')
+infile = open('data/dres_rl.pkl','rb')
 results = pickle.load(infile)
 infile.close()
 
@@ -60,6 +60,6 @@ fig = corner.corner(postsamples, labels= pnames, truths=truth, plot_datapoints=F
 
 plt.gcf().set_size_inches(8, 8)
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.11)
-plt.savefig("data_final/fig/corner_wrl.png")
+plt.savefig("data/fig/corner_rl.png")
 plt.show()
 

@@ -7,7 +7,7 @@ obj2 = ['9.0', '0.215', '1.2', '0.326', '65', '232.7', '2450120.5', '68']       
 
 obj3 = ['14', '271394', '15537', '0.326', '65', '120', '24e9', '6']                      # parameters for Gamma Velorum 1
 
-f = open("data_final/gamma_ini.txt", "w")
+f = open("data/gamma_ini.txt", "w")
 
 
 f.write(par)

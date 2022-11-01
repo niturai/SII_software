@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 
 #********************************************#
 # load dAB file
-dAB = np.load("data_final/dAB.npy")               # (x,y) of gamma2 velorum
-dxAB = np.load("data_final/dxAB.npy")             # x of gamma 2 velorum's star
-dyAB = np.load("data_final/dyAB.npy")             # y of gamma 2 velorum's srar
+dAB = np.load("data/dAB.npy")               # (x,y) of gamma2 velorum
+dxAB = np.load("data/dxAB.npy")             # x of gamma 2 velorum's star
+dyAB = np.load("data/dyAB.npy")             # y of gamma 2 velorum's srar
 
 # load coordinates file of all objects
-x = np.load("data_final/x_coord.npy")
-y = np.load("data_final/y_coord.npy")
-z = np.load("data_final/z_coord.npy")
-t = np.load("data_final/t_coord.npy")
+x = np.load("data/x_coord.npy")
+y = np.load("data/y_coord.npy")
+z = np.load("data/z_coord.npy")
+t = np.load("data/t_coord.npy")
 
 
 #Orbit plot of gamma 2 velorum
@@ -24,7 +24,7 @@ plt.title('Orbit plots', pad = 10)
 plt.xlabel('x-Coordinates in ls', fontsize=18, color='black')
 plt.ylabel('y-coordinate in ls', fontsize=18, color='black')
 plt.legend()
-fname = 'data_final/fig/orbit' + '.png'
+fname = 'data/fig/orbit' + '.png'
 plt.savefig(fname)
 plt.show()
 
@@ -35,7 +35,7 @@ plt.title('Relative orbit plots', pad = 10)
 plt.xlabel('x-Coordinates in ls', fontsize=18, color='black')
 plt.ylabel('y-coordinate in ls', fontsize=18, color='black')
 plt.legend()
-fname = 'data_final/fig/Rltvobt' + '.png'
+fname = 'data/fig/Rltvobt' + '.png'
 plt.savefig(fname)
 plt.show()
 
@@ -49,7 +49,7 @@ plt.title('Orbit plots', pad = 10)
 plt.xlabel('x-Coordinates in ls', fontsize=18, color='black')
 plt.ylabel('y-coordinate in ls', fontsize=18, color='black')
 plt.legend()
-fname = 'data_final/fig/orbit2' + '.png'
+fname = 'data/fig/orbit2' + '.png'
 plt.savefig(fname)
 plt.show()
 
@@ -65,6 +65,6 @@ plt.title('Orbit plots', pad = 10)
 plt.xlabel('x-Coordinates in ls', fontsize=18, color='black')
 plt.ylabel('y-coordinate in ls', fontsize=18, color='black')
 plt.legend()
-fname = 'data_final/fig/orbit3' + '.png'
+fname = 'data/fig/orbit3' + '.png'
 plt.savefig(fname)
 plt.show()
