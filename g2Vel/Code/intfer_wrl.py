@@ -203,11 +203,7 @@ print('noise =',sigma1)
 # simulate the signal for all baseline
 def smdata(sigma,lam,lam1):
     
-    # the signal without any noise
-    if lam1 == lam:
-       g = hbt(gX,gY,X,Y,lam1,lam1)              # signal for all baselines,  for roche lobe with disk
-    else: 
-       g = hbt(gX,gY,X,Y,lam,lam1)               # signal for all baselines,  for disk only
+    g = hbt(gX,gY,X,Y,lam,lam1)               # signal for all baselines,  for disk only
     
     # simulate the data
     simu_data = []
