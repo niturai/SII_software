@@ -231,65 +231,65 @@ print("total signal to noise ratio =", SNR)
 
 
 if __name__ == "__main__":
-     # save the signal and observation time
-     np.save("data/jd",jd)
-     np.save("data/xt",xt)
-     np.save("data/yt",yt)
-     np.save("data/sig",smdata(0,lam,lam1))
-     np.save("data/sig_noise",smdata(sigma,lam,lam1))
-     np.save("data/sig1",smdata(0,lam1,lam1))
-     np.save("data/sig_noise1",smdata(sigma,lam1,lam1))
+    # save the signal and observation time
+    np.save("data/jd",jd)
+    np.save("data/xt",xt)
+    np.save("data/yt",yt)
+    np.save("data/sig",smdata(0,lam,lam1))
+    np.save("data/sig_noise",smdata(sigma,lam,lam1))
+    np.save("data/sig1",smdata(0,lam1,lam1))
+    np.save("data/sig_noise1",smdata(sigma,lam1,lam1))
 
 
 
-# the prior transformation
-ini_x, ini_y, ini_z = R_a, R_b, R1
-ini_X, ini_Y = X, Y
-def trans_prior(theta):
-    R_aprime, R_bprime, R_prime, X_prime, Y_prime = theta
+    # the prior transformation
+    ini_x, ini_y, ini_z = R_a, R_b, R1
+    ini_X, ini_Y = X, Y
+    def trans_prior(theta):
+         R_aprime, R_bprime, R_prime, X_prime, Y_prime = theta
     
-    R_amin, R_amax = 0.5 * ini_x, 1.5 * ini_x
+         R_amin, R_amax = 0.5 * ini_x, 1.5 * ini_x
       
-    R_bmin, R_bmax = 0.5 * ini_y, 1.5 * ini_y
+         R_bmin, R_bmax = 0.5 * ini_y, 1.5 * ini_y
 
-    R_min, R_max = 0.5 * ini_z, 1.5 * ini_z
+         R_min, R_max = 0.5 * ini_z, 1.5 * ini_z
 
-    X_min, X_max = 0.5 * ini_X, 1.5 * ini_X
+         X_min, X_max = 0.5 * ini_X, 1.5 * ini_X
 
-    Y_min, Y_max = 0.5 * ini_Y, 1.5 * ini_Y
+         Y_min, Y_max = 0.5 * ini_Y, 1.5 * ini_Y
      
     
-    R_a = R_aprime * (R_amax - R_amin) + R_amin
-    R_b = R_bprime * (R_bmax - R_bmin) + R_bmin
-    R1 = R_prime * (R_max - R_min) + R_min
+         R_a = R_aprime * (R_amax - R_amin) + R_amin
+         R_b = R_bprime * (R_bmax - R_bmin) + R_bmin
+         R1 = R_prime * (R_max - R_min) + R_min
 
-    X = X_prime * (X_max - X_min) + X_min
-    Y = Y_prime * (Y_max - Y_min) + Y_min
+         X = X_prime * (X_max - X_min) + X_min
+         Y = Y_prime * (Y_max - Y_min) + Y_min
     
-    return (R_a, R_b, R1, X, Y)
+         return (R_a, R_b, R1, X, Y)
 
-# the liklihood function 
-def lnlikli(ln):
-    global R_a, R_b, R1, X, Y
-    R_a, R_b, R1, X, Y = ln
-    g1 = hbt(gX,gY,X,Y,lam1,lam1)                # Signal for all baseline
-    model_data = []
-    for i in range(len(base)):
-        gi = g1[i,:,:]
-        xgr = gX[i,0,:]
-        ygr = gY[i,:,0]
-        zi = np.transpose(abs(gi))
-        spline = RectBivariateSpline(xgr,ygr,zi)
-        model_data.append(spline.ev(xt[i,:],yt[i,:])) 
+     # the liklihood function 
+    def lnlikli(ln):
+         global R_a, R_b, R1, X, Y
+         R_a, R_b, R1, X, Y = ln
+         g1 = hbt(gX,gY,X,Y,lam1,lam1)                # Signal for all baseline
+         model_data = []
+         for i in range(len(base)):
+            gi = g1[i,:,:]
+            xgr = gX[i,0,:]
+            ygr = gY[i,:,0]
+            zi = np.transpose(abs(gi))
+            spline = RectBivariateSpline(xgr,ygr,zi)
+            model_data.append(spline.ev(xt[i,:],yt[i,:])) 
         
-    mdata1 = np.array(model_data)
+         mdata1 = np.array(model_data)
 
-    G = np.sum(sigma1**(-2) * sdata1 * mdata1)
-    W = np.sum(sigma1**(-2) * mdata1 * mdata1) 
+         G = np.sum(sigma1**(-2) * sdata1 * mdata1)
+         W = np.sum(sigma1**(-2) * mdata1 * mdata1) 
 
-    return 0.5 * (G*G/W - np.log(W))
+         return 0.5 * (G*G/W - np.log(W))
 
-if __name__ == "__main__": 
+
     # the parameters name and number of dimension for parameters
     pnames = ('$R_a (ls) $', '$R_b (ls) $', '$R1 (ls)$' ,'X', 'Y')
     ndim = len(pnames)
