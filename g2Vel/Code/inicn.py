@@ -3,7 +3,7 @@ par =  "#M (Msun),        P (yr),               a (au),         e,            I 
 
 obj1 = ['28.5']                                                                                      # parameters for Gamma Velorum 2O
 
-obj2 = ['9.0', '0.215', '1.2', '0.326', '65', '232.7', '2450120.5', '68']                      # parameters for Gamma Velorum 2W
+obj2 = ['9.0', '0.215', '1.2', '0.334', '65.5', '247.7', '2450120.5', '67.4']                      # parameters for Gamma Velorum 2W
 
 obj3 = ['14', '271394', '15537', '0.326', '65', '120', '24e9', '6']                      # parameters for Gamma Velorum 1
 

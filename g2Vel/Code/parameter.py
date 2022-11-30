@@ -24,7 +24,7 @@ def checks():
 
 checks()
 
-fil = open("data_final/inic_out.txt","r")
+fil = open("data/inic_out.txt","r")
 l = fil.readline().split()                     
  
 for i in range(len(l)):                           
@@ -91,16 +91,16 @@ for t in range(nstep):
     z[:,t] = pos[:,2]                              # zth position of all N object
 
 # save all coordinates in file
-np.save('data_final/x_coord',x)           
-np.save('data_final/y_coord',y)           
-np.save('data_final/z_coord',z)           
-np.save('data_final/t_coord',t_stp)              
+np.save('data/x_coord',x)           
+np.save('data/y_coord',y)           
+np.save('data/z_coord',z)           
+np.save('data/t_coord',t_stp)              
 
 # load all coordinates file 
-x = np.load('data_final/x_coord.npy')
-y = np.load('data_final/y_coord.npy')
-z = np.load('data_final/z_coord.npy')
-t = np.load('data_final/t_coord.npy')
+x = np.load('data/x_coord.npy')
+y = np.load('data/y_coord.npy')
+z = np.load('data/z_coord.npy')
+t = np.load('data/t_coord.npy')
 
 slice = 1
 xs_0 = x[0,::slice]                              # x-coordinate of O               
@@ -120,8 +120,8 @@ dAB[1,:] = ys_0 - ys_1
 dxAB = x[0,::] - x[1,::]         
 dyAB = y[0,::] - y[1,::]          
 
-np.save('data_final/dxAB', dxAB)     # x-coordinate of binary ow        
-np.save('data_final/dyAB', dyAB)     # y coordinate of binary ow
-np.save('data_final/dAB', dAB)       # (x,y) coordinate of binary ow
+np.save('data/dxAB', dxAB)     # x-coordinate of binary ow        
+np.save('data/dyAB', dyAB)     # y coordinate of binary ow
+np.save('data/dAB', dAB)       # (x,y) coordinate of binary ow
 
 

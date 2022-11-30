@@ -78,9 +78,9 @@ def getposvel(fname,now=2023):
         pos[n],vel[n] = posvel(P,a,e,omega,I,Omega,mean_an) # position and velocity
     return mass, bary(mass,pos), bary(mass,vel)             # return mass , position and velocity of Nth body (initial value) 
 
-mass, pos,vel = getposvel('data_final/gamma_ini.txt')                  # read the input parameters of N bodies
+mass, pos,vel = getposvel('data/gamma_ini.txt')                  # read the input parameters of N bodies
 
-fil = open('data_final/inic_out.txt', 'w')                             # output as a txt file
+fil = open('data/inic_out.txt', 'w')                             # output as a txt file
          
 N_body = len(mass)
 for l in range(N_body):

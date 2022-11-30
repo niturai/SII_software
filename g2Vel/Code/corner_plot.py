@@ -4,29 +4,7 @@ import pickle
 import matplotlib.pyplot as plt
 import corner
 import math
-
-# the radius of stars 
-R_a = 39.4503                      # Radius of source A in light seconds
-R_b = 13.9236                      # Radius of disk
-
-
-# position of orbit in sky with time
-dAB = np.load("data/dAB.npy")
-X = dAB[0,0]                  # X-position of orbit
-Y = dAB[1,0]                  # Y-position of orbit
-
-# define the radius of emission region
-def emis(M1,M2):
-    A = np.sqrt(X**2 + Y**2)      # orbital separation of binary
-    q = M1/M2                     # mass ratio (M1 having the roche lobe)
-    a1 = 0.49*q**(2/3)
-    a2 = 0.6*q**(2/3)
-    a2 += math.log(1+q**(1/3))
-    r1 = A*a1/a2
-    return r1
-
-
-R1 = emis(9,28) - R_b                           # Radius of WR (disk + atmosphere)
+from intfer_rl import R_a, R_b, R1, X, Y  
 
 # parameters, which are estimated
 truth = [R_a, R_b, R1, X, Y]

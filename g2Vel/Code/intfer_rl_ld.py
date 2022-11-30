@@ -16,10 +16,13 @@ k = 1.380649e-23                 # J/K
 # the constant parameter of a star
 T_a = 35000                      # Temperature of source A
 T_b = 57000                        # Temperature of disk
-T1 = 20000                      # Temperature of atmosphere
+T1 = 13564                      # Temperature of atmosphere
 R_a = 39.4503                      # Radius of source A in light seconds
 R_b = 13.9236                      # Radius of disk
-D = 2.872e10                       # Distance from earth in light seconds
+D = 3.458e10                       # Distance from earth in light seconds
+
+# limb darkening coefficients
+l = 0.6
 
 # position of orbit in sky with time
 dAB = np.load("data/dAB.npy")
@@ -38,10 +41,10 @@ def emis(M1,M2):
     return r1
 
 
-R1 = emis(9,28) - R_b                           # Radius of WR (disk + atmosphere)
+R1 = emis(9,28.5) - R_b                           # Radius of WR (disk + atmosphere)
 print(R1)
 
-'''
+
 # observation Julian day 
 jd = jd                           # have (121 shape) 6 minutes apart for Night of observation
 
@@ -76,7 +79,7 @@ def pho_spec(R, T, lam):
 
 # the model 
 def hbt(x,y,X,Y,lam,lam1):
-
+    
     I_a = pho_spec(R_a, T_a, lam)
     I_b = pho_spec(R_b, T_b, lam)
  
@@ -94,18 +97,31 @@ def hbt(x,y,X,Y,lam,lam1):
     b3 = v*r*R1
     b4 = v*r*R_b
 
-    V_a = 2 * I_a * sp.jv(1, b1)/b1
+    # visibility of source A with ld
+    V_a = (1-l) * sp.jv(1, b1)/b1
+    V_a += l * np.sqrt(np.pi/2) * sp.jv(3/2, b1)/b1**(3/2)  
+    V_a *= I_a 
 
-    V_2 = I_b * sp.jv(1, b2)/b2
+    # visibility of source B with ld
+    V_2 = (1-l) * sp.jv(1, b2)/b2
+    V_2 += l * np.sqrt(np.pi/2) * sp.jv(3/2, b2)/b2**(3/2)
+    V_2 *= I_b 
+
+    # visibility of emission region
     V_3 = I_1 * sp.jv(1, b3)/b3
     V_4 = I_b1 * sp.jv(1, b4)/b4
 
-    V_b = 2 * (V_2 + V_3 - V_4)
+    # total of source B and emission region
+    V_b = V_2 + V_3 - V_4
     
+    # numerator
     V_ab = V_a * V_b * np.cos(v * (x*X + y*Y))
+   
+    # for denominator
+    C = 1/2 - l/6
 
     V = (V_a**2 + V_b**2 + 2 * V_ab)
-    V /= (I_a + I_b + I_1 - I_b1)**2
+    V /= C*C*(I_a + I_b + I_1 - I_b1)**2
     
     return V
 
@@ -164,7 +180,7 @@ wY = tgrid[:,3]                                # Y axis grids of apertures
 
 # The aperture function 
 w = circ(wX,wY,rad)
-'''
+
 '''
 # the total flux spectrum from source
 def tot_spec(lam,lam1):
@@ -184,7 +200,7 @@ tspec1 = tot_spec(lam1, lam1)     # for line spectra
 print('total flux spectrum from continuous line=', tspec)
 print('total flux spectrum from continuous line=', tspec1)
 '''
-'''
+
 tspec = 4.9e-5                         # for continuous spectra
 tspec1 = 0.98e-4                       # for line spectra
 
@@ -204,7 +220,7 @@ print('noise =',sigma1)
 
 # simulate the signal for all baseline
 def smdata(sigma,lam,lam1):
-    
+
     g = hbt(gX,gY,X,Y,lam,lam1)               # signal for all baselines,  for disk only
     
     # simulate the data
@@ -223,13 +239,6 @@ def smdata(sigma,lam,lam1):
 sdata = smdata(sigma,lam,lam1)
 sdata1 = smdata(sigma1,lam1,lam1)
 
-
-
-# total SNR value
-SNR = (1/sigma1)*(np.sum(sdata1)**2)**.5
-print("total signal to noise ratio =", SNR)
-
-
 if __name__ == "__main__":
     # save the signal and observation time
     np.save("data/jd",jd)
@@ -243,35 +252,40 @@ if __name__ == "__main__":
 
 
     # the prior transformation
-    ini_x, ini_y, ini_z = R_a, R_b, R1
+    ini_x, ini_y, ini_R = R_a, R_b, R1
     ini_X, ini_Y = X, Y
+    ini_l = l
     def trans_prior(theta):
-         R_aprime, R_bprime, R_prime, X_prime, Y_prime = theta
+         R_aprime, R_bprime, R_prime, X_prime, Y_prime, l_prime = theta
     
          R_amin, R_amax = 0.5 * ini_x, 1.5 * ini_x
       
          R_bmin, R_bmax = 0.5 * ini_y, 1.5 * ini_y
 
-         R_min, R_max = 0.5 * ini_z, 1.5 * ini_z
+         R_min, R_max = 0.5 * ini_R, 1.5 * ini_R
 
          X_min, X_max = 0.5 * ini_X, 1.5 * ini_X
 
          Y_min, Y_max = 0.5 * ini_Y, 1.5 * ini_Y
-     
+
+         l_min, l_max = 0.5 * ini_l, 1.5 * ini_l     
     
          R_a = R_aprime * (R_amax - R_amin) + R_amin
          R_b = R_bprime * (R_bmax - R_bmin) + R_bmin
+
          R1 = R_prime * (R_max - R_min) + R_min
 
          X = X_prime * (X_max - X_min) + X_min
          Y = Y_prime * (Y_max - Y_min) + Y_min
-    
-         return (R_a, R_b, R1, X, Y)
+
+         l = l_prime * (l_max - l_min) + l_min
+         
+         return (R_a, R_b, R1, X, Y, l)
 
      # the liklihood function 
     def lnlikli(ln):
-         global R_a, R_b, R1, X, Y
-         R_a, R_b, R1, X, Y = ln
+         global R_a, R_b, R1, X, Y, l
+         R_a, R_b, R1, X, Y, l = ln
          g1 = hbt(gX,gY,X,Y,lam1,lam1)                # Signal for all baseline
          model_data = []
          for i in range(len(base)):
@@ -291,7 +305,7 @@ if __name__ == "__main__":
 
 
     # the parameters name and number of dimension for parameters
-    pnames = ('$R_a (ls) $', '$R_b (ls) $', '$R1 (ls)$' ,'X', 'Y')
+    pnames = ('$R_a (ls) $', '$R_b (ls) $', 'R1', 'X', 'Y', 'l')
     ndim = len(pnames)
 
     # the sampling function 
@@ -301,16 +315,10 @@ if __name__ == "__main__":
 
     # Save the sample data in form of pickle 
     dres = sampler.results
-    out = open('data/dres_rl.pkl','wb')
+    out = open('data/dres_rl_ld.pkl','wb')
     pickle.dump(dres,out)
     out.close()
     pool.close()
-'''
-
-
-
-
-
 
 
 
