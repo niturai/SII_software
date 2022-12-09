@@ -41,7 +41,7 @@ def emis(M1,M2):
 R1 = emis(9,28) - R_b                           # Radius of WR (disk + atmosphere)
 print(R1)
 
-'''
+#'''
 # observation Julian day 
 jd = jd                           # have (121 shape) 6 minutes apart for Night of observation
 
@@ -305,7 +305,7 @@ if __name__ == "__main__":
     pickle.dump(dres,out)
     out.close()
     pool.close()
-'''
+#'''
 
 
 

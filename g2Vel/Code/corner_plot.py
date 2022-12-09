@@ -4,19 +4,19 @@ import pickle
 import matplotlib.pyplot as plt
 import corner
 import math
-from intfer_rl import R_a, R_b, R1, X, Y  
+from intfer_rl_ld import R_a, R_b, R1, X, Y, l #  
 
 # parameters, which are estimated
-truth = [R_a, R_b, R1, X, Y]
+truth = [R_a, R_b, R1, X, Y, l] #
 print('parameters',truth)
 
 
 #number of parameter to estimate
-pnames = ('$R_a (ls) $', '$R_b (ls) $', 'R1', 'X', 'Y')
+pnames = ('$R_a (ls) $', '$R_b (ls) $', 'R1', 'X', 'Y', 'l') #
 ndim = len(pnames)
 
 # the interderometric data
-infile = open('data/dres_rl.pkl','rb')
+infile = open('data/dres_rl_ld.pkl','rb') #
 results = pickle.load(infile)
 infile.close()
 
@@ -38,6 +38,6 @@ fig = corner.corner(postsamples, labels= pnames, truths=truth, plot_datapoints=F
 
 plt.gcf().set_size_inches(8, 8)
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.11)
-plt.savefig("data/fig/corner_rl.png")
+plt.savefig("data/fig/corner_rl_ld.png") #
 plt.show()
 
