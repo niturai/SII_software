@@ -13,6 +13,7 @@ def draw(xc,yc,f,zoom,where,cmap='Greys_r',ceil=None,fceil=None,title=None):
         return f[N//2-M:N//2+M,N//2-M:N//2+M]
     f = cen(f)
     pl.clf()
+    pl.tight_layout()
     fmax = f.max()
     fmin = f.min()
     if where=='sky':
@@ -56,6 +57,6 @@ def draw(xc,yc,f,zoom,where,cmap='Greys_r',ceil=None,fceil=None,title=None):
     if title:
         pl.title(title)
     pl.gca().set_aspect('equal')
-    pl.tight_layout()
+
 
   

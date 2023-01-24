@@ -13,20 +13,20 @@ source.set_radec((13,25,11.579),(-11,9,40.75))
 source.set_latlon((28,45,25.79),(-17,53,14.39)) # CTA-N + MAGIC
 
 def run():
-    F = 100
+    F = 40
     N = 1024
     ds = 1e-10
     lam = 400e-9
-    for fr in range(1,F):
-        jd = 246e4 + (fr-1)/24
+    for fr in range(F):
+        jd = 246e4 + fr/10
         sx,sy,x,y,Tmap = teff(N,ds,lam,jd)
         til = ('Teff on JD = %10.2f' % jd)
         draw(sx,sy,Tmap,8,'sky',cmap='gray',title=til)
-        pl.pause(1)
-        #pl.savefig('tmp/sky'+'%i'%fr)
+        #pl.pause(1)
+        pl.savefig('tmp/sky'+'%i'%fr)
         S = sbright(Tmap,lam,ds)
         f = correldens(S,lam)
-        f *= 1 * (1e9 * 300)**.5  # A = 1 m^2 and t_obs = 5 min
+        #f *= 20 * (1e9 * 300)**.5  # A = 20 m^2 and t_obs = 5 min
         f /= np.max(f)
         til = ('normalized correlation at %i nm' % (1e9*lam+0.5))
         draw(x,y,f,16,'ground',ceil=1,cmap='inferno',title=til)
@@ -35,8 +35,8 @@ def run():
         print('time %.3f altitude %.3f' % (jd-246e4,hz))
         if hz > 0:
             pl.plot(u,v,'+',color='white')
-        pl.pause(1)
-        #pl.savefig('tmp/cdens%i'%fr)
+        #pl.pause(1)
+        pl.savefig('tmp/cdens%i'%fr)
         print(fr)
 
 diam_mst = 12
