@@ -4,19 +4,19 @@ import pickle
 import matplotlib.pyplot as plt
 import corner
 import math
-from intfer_rl import R_a, R_b,X, Y
+from intfer import R_a, R_b, l, m 
 
 # parameters, which are estimated
-truth = [R_a, R_b, X, Y] #
+truth = [R_a, R_b, l, m]
 print('parameters',truth)
 
 
 #number of parameter to estimate
-pnames = ('$R_a (ls) $', '$R_b (ls) $', 'X', 'Y') #
+pnames = ('$R_a (ls) $', '$R_b (ls) $', 'l', 'm')
 ndim = len(pnames)
 
 # the interderometric data
-infile = open('data/dres_wrl.pkl','rb') #
+infile = open('data/dres.pkl','rb') #
 results = pickle.load(infile)
 infile.close()
 
@@ -31,13 +31,13 @@ for i in range(ndim):
     print('%s in range %7.16e %7.16e %7.16e' % (pnames[i],p[0],p[1],p[2]))
 
 # plotting with posterior samples 
-tex = dict(ha='center', fontsize=14,fontweight='bold', color='black')
-text = dict(ha='center', fontsize=12,fontweight='bold', color='black')
+tex = dict(ha='center', fontsize=12)
+text = dict(ha='center', fontsize=12)
 fig = corner.corner(postsamples, labels= pnames, truths=truth, plot_datapoints=False,
-                    label_kwargs= tex, title_kwargs= text, show_titles=True, title_fmt=".2e")
+                   label_kwargs=tex, title_kwargs= text, show_titles=True, title_fmt=".2e")
 
-plt.gcf().set_size_inches(8, 8)
-plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.11)
-plt.savefig("data/fig/corner_wrl.png") #
+
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.08, hspace=0.15)
+plt.savefig("fig/corner.png") 
 plt.show()
 
