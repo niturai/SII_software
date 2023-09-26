@@ -1,0 +1,2 @@
+Regor is a binary star system containing a Blue supergiant and Wolf-Rayet star. The orbit period of this binary star system is 78.53 days. The simulation of orbit of this system have been done with Leap-Frog method. During this simulation Gamma 1 Velorum also have been considered. However, the effect of this binary system for one orbit period is negligible. 
+The simulation of Stellar Intensity Interferometry (SII) also have been done for this sytem. To estimate the parameter of this system Dynesty have been used.

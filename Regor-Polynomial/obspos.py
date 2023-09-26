@@ -26,7 +26,7 @@ A = 100
 #comb = combinations([-0.16-85.04j, 85.07-0.37j, 0.24+85.04j, -85.04+0.28j],2)
 
 # best combination
-base = (85.07-0.37j) - (-0.16-85.04j)                     # baseline (E,N) for (C2 and C1 combination)
+base = (85.04-0.16j) - (-0.28-85.04j)                     # baseline (E,N) for (C1 and C4 combination)
 
 # three dimensional baseline 
 x = round(np.real(base),2)
