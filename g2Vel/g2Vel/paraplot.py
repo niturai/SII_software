@@ -43,7 +43,7 @@ for i in range(ndim):
 # plotting with posterior samples 
 tex = dict(ha='center', fontsize=12)
 text = dict(ha='center', fontsize=12)
-fig = corner.corner(postsamples, labels= pnames, color = 'g', truths=truth, plot_datapoints=False,
+fig = corner.corner([postsamples[:,0], postsamples[:,1]], labels= pnames[:2], color = 'g', truths=truth[:2], plot_datapoints=False,
                    label_kwargs=tex, title_kwargs= text, show_titles=True, title_fmt=".2e")
 
 
